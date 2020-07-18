@@ -28,10 +28,10 @@
 
         <DockPanel Style="{StaticResource PanelWithMarginBottom}">
             <Button Style="{StaticResource NavigationButton}" Command="{Binding CommandContainer.NavigateToPreviousDay, Mode=OneWay}">
-                <Image Source="/Mmu.TimeBuddy.WpfUI;component/Infrastructure/Assets/fa-arrow-left.png" />
+                <Image Source="/Infrastructure/Assets/fa-arrow-left.png" />
             </Button>
             <Button Style="{StaticResource NavigationButton}" Command="{Binding CommandContainer.NavigateToNextDay, Mode=OneWay}">
-                <Image Source="/Mmu.TimeBuddy.WpfUI;component/Infrastructure/Assets/fa-arrow-right.png" />
+                <Image Source="/Infrastructure/Assets/fa-arrow-right.png" />
             </Button>
 
             <Button HorizontalAlignment="Right" Style="{StaticResource ActionButton}" Content="Export"
