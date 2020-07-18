@@ -1,0 +1,126 @@
+﻿<UserControl x:Class="Mmu.Wb.TimeBuddy.WpfUI.Areas.Details.Views.DayDetails.DayDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dp="clr-namespace:Mmu.Mlh.WpfCoreExtensions.Areas.ViewExtensions.Grids.AttachedProperties;assembly=Mmu.Mlh.WpfCoreExtensions"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="Dictionary.xaml" />
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding
+            Command="{Binding CommandContainer.Save, Mode=OneWay}"
+            Key="S" Modifiers="Ctrl" />
+    </UserControl.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Style="{StaticResource PanelWithMarginBottom}">
+            <Button Style="{StaticResource NavigationButton}" Command="{Binding CommandContainer.NavigateToPreviousDay, Mode=OneWay}">
+                <Image Source="/Mmu.TimeBuddy.WpfUI;component/Infrastructure/Assets/fa-arrow-left.png" />
+            </Button>
+            <Button Style="{StaticResource NavigationButton}" Command="{Binding CommandContainer.NavigateToNextDay, Mode=OneWay}">
+                <Image Source="/Mmu.TimeBuddy.WpfUI;component/Infrastructure/Assets/fa-arrow-right.png" />
+            </Button>
+
+            <Button HorizontalAlignment="Right" Style="{StaticResource ActionButton}" Content="Export"
+                    Command="{Binding CommandContainer.ExportToFile, Mode=OneWay}" />
+        </DockPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Style="{StaticResource PanelWithMarginBottom}">
+            <TextBox Style="{StaticResource TimeTextBox}"
+                     Text="{Binding SelectedReportEntry.BeginTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Style="{StaticResource TimeTextBox}"
+                     Text="{Binding SelectedReportEntry.EndTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="{Binding SelectedReportEntry.ReportEntryId, Mode=OneWay}" />
+        </StackPanel>
+
+        <TextBox Grid.Row="2" Style="{StaticResource WorkdescriptionTextBox}"
+                 Text="{Binding SelectedReportEntry.WorkDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Grid Grid.Row="3" Margin="0,10,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Label Content="{Binding ReportedTimeDescription, Mode=OneWay}" />
+
+            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Style="{StaticResource ActionButton}" Content="Clear"
+                        Command="{Binding CommandContainer.Clear, Mode=OneWay}" />
+                <Button Style="{StaticResource ActionButton}" Content="Save"
+                        Command="{Binding CommandContainer.Save, Mode=OneWay}" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="4">
+            <DataGrid
+                x:Name="Dg"
+                ItemsSource="{Binding ReportEntries, Mode=OneWay}"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                dp:DoubleClickBinding.DoubleClickCommand="{Binding CommandContainer.EditEntry}"
+                dp:DoubleClickBinding.DoubleClickParameter="{Binding ElementName=Dg, Path=SelectedItem, Mode=OneWay}"
+                CanUserDeleteRows="False"
+                Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}"
+                IsReadOnly="false"
+                VerticalScrollBarVisibility="Visible">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding BeginTime, Mode=OneWay}"
+                        Header="From"
+                        IsReadOnly="true"
+                        Width="Auto" />
+                    <DataGridTextColumn
+                        Binding="{Binding EndTime, Mode=OneWay}"
+                        Header="To"
+                        IsReadOnly="true"
+                        Width="Auto" />
+                    <DataGridTextColumn
+                        Binding="{Binding WorkDescription, Mode=OneWay}"
+                        Header="Work"
+                        IsReadOnly="true"
+                        Width="*" />
+                    <DataGridTemplateColumn Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                                <Button
+                                    Style="{StaticResource EntryActionButton}"
+                                    Command="{Binding DataContext.CommandContainer.CopyText, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=OneWay}"
+                                    CommandParameter="{Binding .}">
+                                    ↑
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                                <Button
+                                    Style="{StaticResource EntryActionButton}"
+                                    Command="{Binding DataContext.CommandContainer.DeleteEntry, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=OneWay}"
+                                    CommandParameter="{Binding .}">
+                                    X
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>
