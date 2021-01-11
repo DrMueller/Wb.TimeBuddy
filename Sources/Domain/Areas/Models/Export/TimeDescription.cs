@@ -7,6 +7,11 @@ namespace Mmu.Wb.TimeBuddy.Domain.Areas.Models.Export
     {
         private readonly TimeSpan _timeSpan;
 
+        public TimeDescription(TimeSpan timeSpan)
+        {
+            _timeSpan = timeSpan;
+        }
+
         public string RoundedAbsoluteTimeDescription
         {
             get
@@ -20,17 +25,12 @@ namespace Mmu.Wb.TimeBuddy.Domain.Areas.Models.Export
                     roundedTime += 0.25;
                 }
 
-                var absoluteTime = roundedTime.ToString(CultureInfo.InvariantCulture);
+                var absoluteTime = roundedTime.ToString(CultureInfo.InvariantCulture).Replace('.', ',');
 
                 return absoluteTime;
             }
         }
 
         public string TimeDescriptionInMinutes => _timeSpan.ToString(@"hh\:mm");
-
-        public TimeDescription(TimeSpan timeSpan)
-        {
-            _timeSpan = timeSpan;
-        }
     }
 }
