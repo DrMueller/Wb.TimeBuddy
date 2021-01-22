@@ -25,7 +25,7 @@ namespace Mmu.Wb.TimeBuddy.Domain.Areas.Models.Export
                     roundedTime += 0.25;
                 }
 
-                var absoluteTime = roundedTime.ToString(CultureInfo.InvariantCulture).Replace('.', ',');
+                var absoluteTime = roundedTime.ToString(CultureInfo.InvariantCulture);
 
                 return absoluteTime;
             }
