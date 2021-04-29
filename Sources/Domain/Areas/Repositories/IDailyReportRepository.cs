@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mmu.Mlh.DomainExtensions.Areas.Repositories;
 using Mmu.Mlh.LanguageExtensions.Areas.Types.Maybes;
@@ -9,5 +10,7 @@ namespace Mmu.Wb.TimeBuddy.Domain.Areas.Repositories
     public interface IDailyReportRepository : IRepository<DailyReport, string>
     {
         Task<Maybe<DailyReport>> LoadByDateAsync(DateTime reportData);
+
+        Task<IReadOnlyCollection<DailyReport>> LoadSinceAsync(DateTime since);
     }
 }

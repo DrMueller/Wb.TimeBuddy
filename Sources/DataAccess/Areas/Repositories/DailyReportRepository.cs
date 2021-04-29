@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Mmu.Mlh.DataAccess.Areas.DatabaseAccess;
 using Mmu.Mlh.DataAccess.Areas.DataModeling.Services;
@@ -32,6 +34,14 @@ namespace Mmu.Wb.TimeBuddy.DataAccess.Areas.Repositories
             }
 
             var result = _dataModelAdapter.Adapt(dataModel);
+            return result;
+        }
+
+        public async Task<IReadOnlyCollection<DailyReport>> LoadSinceAsync(DateTime since)
+        {
+            var dataModels = await _dataModelRepository.LoadAsync(f => f.Date >= since);
+            var result = dataModels.Select(dm => _dataModelAdapter.Adapt(dm)).ToList();
+
             return result;
         }
     }
